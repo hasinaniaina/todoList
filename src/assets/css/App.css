@@ -1,0 +1,1283 @@
+:root {
+    --low: #06b924;
+    --medium: #eacd2e;
+    --high: #ea2e2e;
+    --edit: #ff13e0;
+    --delete: #610000;
+    --progress: #036bfc;
+    --checked: #ff8953;
+    --complete: #09d902;
+}
+
+.login-container,
+.signin-container {
+    width: 100%;
+    height: 100%;
+}
+
+.content {
+    background-color: #fff;
+    width: 70%;
+    padding: 20px 0;
+    border-radius: 20px;
+    box-shadow: 15px 14.83px 19px rgb(0 0 0 / 5%);
+}
+
+.content .right {
+    margin-right: 10px;
+    width: 50%;
+}
+
+.signin-container .content .right {
+    margin-left: 10px;
+}
+
+@media screen and (max-width:767px) {
+    .content .right {
+        margin: 0 10px;
+        width: 100%;
+    }
+}
+
+
+.content .right .title-container h2 {
+    font-size: 60px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+.content .right .fields-container .fields,
+.profil-form .fields,
+.project-form .fields,
+.task-form .fields {
+    border: 1px solid #e5e5e5;
+    border-radius: 5px;
+    margin-top: 10px;
+    height: 78px;
+    margin-bottom: 20px;
+    position: relative;
+}
+
+.content .right .fields-container .fields .fields-tmp,
+.profil-form .fields .fields-tmp,
+.project-form .fields .fields-tmp,
+.task-form .fields .fields-tmp {
+    width: 100%;
+    border-radius: 5px;
+    height: 100%;
+    border: 2px solid #fec801;
+    position: absolute;
+    top: 0;
+    animation: fieldsNotActiveAnimation .5s ease forwards;
+}
+
+.content .right .fields-container .fields .fields-tmp.active,
+.profil-form .fields .fields-tmp.active,
+.project-form .fields .fields-tmp.active,
+.task-form .fields .fields-tmp.active {
+    animation: fieldsActiveAnimation .5s ease forwards;
+}
+
+.signin-container .content .right .fields-container .fields .fields-tmp {
+    width: 100%;
+    border-radius: 5px;
+    height: 100%;
+    border: 2px solid #ff4f5a;
+    position: absolute;
+    top: 0;
+    animation: fieldsNotActiveAnimation .5s ease forwards;
+}
+
+.signin-container .content .right .fields-container .fields .fields-tmp.active {
+    animation: fieldsActiveAnimation .5s ease forwards;
+}
+
+
+@keyframes fieldsActiveAnimation {
+    0% {
+        transform: scale(1.1);
+    }
+
+    50% {
+        opacity: 1;
+    }
+
+    100% {
+        transform: scale(1);
+    }
+}
+
+@keyframes fieldsNotActiveAnimation {
+    0% {
+        transform: scale(1);
+    }
+
+    50% {
+        transform: scale(1.1);
+    }
+
+    100% {
+        opacity: 0;
+    }
+}
+
+.content .right .fields-container .fields label,
+.profil-form .fields label,
+.project-form .fields label,
+.task-form .fields label {
+    position: absolute;
+    top: 50%;
+    left: 10px;
+    color: #8d8d8d;
+    font-size: 18px;
+    z-index: 1;
+    font-size: 18px;
+    transform: translate(0, -50%);
+    animation: labelNotActiveAnimation .4 ease forwards;
+}
+
+.content .right .fields-container .fields label.active,
+.profil-form .fields label.active,
+.project-form .fields label.active,
+.task-form .fields label.active {
+    animation: labelActiveAnimation .4s ease forwards;
+}
+
+
+
+@keyframes labelActiveAnimation {
+    0% {
+        transform: translate(0, -50%);
+    }
+
+    100% {
+        transform: translate(0, -150%);
+        font-size: 12px;
+    }
+}
+
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: #131313;
+    transition: background-color 5000s ease-in-out 0s;
+    box-shadow: inset 0 0 20px 20px #ffffff29;
+}
+
+.content .right .fields-container .fields input,
+.profil-form .fields input,
+.project-form .fields input,
+.task-form .fields input {
+    position: relative;
+    z-index: 2;
+    height: 78px;
+    background-color: transparent;
+    padding-left: 10px;
+    width: 100%;
+}
+
+.content .right .fields-container .fields input:focus,
+.profil-form .fields input:focus,
+.project-form .fields input:focus,
+.task-form .fields input:focus {
+    outline: none !important;
+}
+
+.content .right .fields-container .remember-me {
+    display: flex;
+    align-items: center;
+    text-align: left;
+}
+
+.content .right .fields-container .remember-me span {
+    margin-left: 5px;
+    font-size: 14px;
+    color: #3c3c3c;
+}
+
+.content .right .fields-container button {
+    background: #ffc801;
+    width: 100%;
+    padding: 10px 0;
+    color: #fff;
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.content .right .fields-container button:hover {
+    background-color: #ffd849;
+}
+
+.signin-container .content .right .fields-container button {
+    background: #ff4f5a;
+    width: 100%;
+    padding: 10px 0;
+    color: #fff;
+    margin-right: 10px;
+    font-size: 18px;
+    font-weight: 500;
+    margin-top: 20px;
+    border-radius: 5px;
+}
+
+.signin-container .content .right .fields-container button:hover {
+    background-color: #ed8a90;
+}
+
+.content .left {
+    margin-right: 10px;
+    width: 50%;
+}
+
+@media screen and (max-width:767px) {
+    .content .left {
+        width: 100%;
+    }
+}
+
+.dont-have-account a:hover {
+    text-decoration: underline;
+}
+
+.dashboard {
+    height: 100vh;
+}
+
+.dashboard .header {
+    height: 100px;
+    background: #fff;
+    box-shadow: 1px 1px 9px #cdcdcd;
+    padding: 0 10px;
+}
+
+.dashboard .header .left h2 {
+    font-size: 20px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.dashboard .header .right .avatar {
+    width: 32px;
+    height: 32px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.dashboard .header .right .username {
+    cursor: pointer;
+    position: relative;
+}
+
+.dashboard .header .right .username p {
+    margin: 0;
+}
+
+.dashboard .header .right .username ul {
+    position: absolute;
+    background: #fff;
+    padding: 10px;
+    width: 100%;
+    box-shadow: 0px 5px 6px #d5d5d5;
+    font-size: 13px;
+    top: 23px;
+    overflow: hidden;
+}
+
+.dashboard .header .right .username ul.not-active {
+    animation: hideMenuDashboard .3s ease-out forwards;
+
+}
+
+
+.dashboard .header .right .username ul.active {
+    animation: showMenuDashboard .5s ease-out forwards;
+}
+
+.dashboard .header .right .username ul li {
+    font-size: 12px;
+}
+
+@keyframes showMenuDashboard {
+    0% {
+        transform: translateY(-15px);
+        opacity: 0;
+    }
+
+    50% {
+        transform: translateY(0);
+    }
+
+    100% {
+        visibility: visible;
+    }
+}
+
+@keyframes hideMenuDashboard {
+    0% {
+        transform: translateY(0);
+    }
+
+    50% {
+        transform: translateY(-10px);
+    }
+
+    100% {
+        transform: translateY(-15px);
+        visibility: hidden;
+        opacity: 0;
+    }
+}
+
+.dashboard .header .right .username ul li:first-child {
+    margin-bottom: 10px;
+}
+
+.dashboard .header .right .username ul li:hover {
+    font-weight: 500;
+}
+
+.dashboard .body {
+    padding: 10px;
+    height: 80%;
+}
+
+
+.dashboard .body .breadcrumbs {
+    display: flex;
+}
+
+/* .dashboard .body .breadcrumbs .crumb::after {
+    content: ">";
+    font-size: 34px;
+    color: #040404;
+    font-weight: 600;
+}
+
+.dashboard .body .breadcrumbs .crumb:last-child::after {
+    content: "";
+} */
+
+.dashboard .body .breadcrumbs .crumb {
+    background-color: #ffffff;
+    padding: 10px 10px;
+    border-radius: 10px 30px 0 0;
+    border: solid 1px #ababab;
+    border-bottom: none;
+}
+
+/* .dashboard .body .breadcrumbs .crumb:first-child {
+    padding-right: 0;
+}
+
+.dashboard .body .breadcrumbs .crumb:last-child {
+    padding-left: 0;
+} */
+
+
+.dashboard .body .breadcrumbs .crumb a {
+    text-transform: capitalize;
+    font-size: 34px;
+    font-weight: 500;
+    color: #000000;
+}
+
+.dashboard .body .breadcrumbs .crumb a:hover {
+    font-weight: 600;
+}
+
+
+.dashboard .body .dashboard-content {
+    /* margin-top: 10px; */
+    width: 100%;
+    height: 100%;
+    background-color: #fff;
+}
+
+@media screen and (max-width: 497px) {
+    .dashboard .body .dashboard-content {
+        overflow-y: scroll;
+    }
+}
+
+.dashboard .body .dashboard-content .project,
+.task {
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    padding: 10px;
+}
+
+.dashboard .body .dashboard-content .project .empty-project,
+.task .empty-task {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.dashboard .body .dashboard-content .project .empty-project p span,
+.task .empty-task p span {
+    color: #0d6efd;
+}
+
+.dashboard .body .dashboard-content .empty-project p span:hover,
+.task .empty-task p span:hover {
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.dashboard .body .dashboard-content .project .project-list {
+    display: flex;
+    flex-wrap: wrap;
+}
+
+@media  screen and (max-width: 387px) {
+    .dashboard .body .dashboard-content .project .project-list {
+        justify-content: center;
+        margin-top: 20px;
+    }
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container {
+    display: flex;
+    padding: 10px;
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .left {
+    margin-right: 10px;
+    width: 128px;
+    position: relative;
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .left:hover {
+    font-weight: 500;
+    cursor: pointer;
+    animation: selectFolder .3s ease-in forwards;
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .left .notification-of-project {
+    position: absolute;
+    top: -2px;
+    left: -10px;
+} 
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .left .notification-of-project p {
+    padding: 3px 10px;
+    border-radius: 50%;
+    background: #ff1212;
+    color: #fff;
+    font-weight: bold;
+    font-size: 12px;
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .left .delete-confirmation {
+    position: absolute;
+    width: 100%;
+    top: 0;
+    height: 128px;
+    flex-direction: column;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+    background-color: rgba(255, 255, 255, 0.5);
+    transform: scale(0, 0);
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .left .delete-confirmation.show {
+    animation: showProjectOption .5s ease-in forwards;
+}
+
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .left .delete-confirmation .button {
+    display: flex;
+    justify-content: space-around;
+    width: 100%;
+    margin-top: 10px;
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .left .delete-confirmation .button button:first-child {
+    color: #0d6efd;
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .left .delete-confirmation .button button:hover {
+    text-decoration: underline;
+}
+
+@keyframes selectFolder {
+    from {
+        transform: scale(100%, 100%);
+    }
+
+    to {
+        transform: scale(102%, 102%);
+    }
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .left p {
+    text-align: center;
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container:hover .right {
+    animation: showProjectOption .2s ease-in forwards;
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .right {
+    transform: scale(0, 0);
+}
+
+.dashboard .body .dashboard-content .project .project-list .add-project {
+    width: 64px;
+}
+
+.dashboard .body .dashboard-content .project .project-list .add-project img {
+    cursor: pointer;
+}
+
+.dashboard .body .dashboard-content .project .project-list .add-project img:hover {
+    transform: scale(105%, 105%);
+}
+
+@keyframes showProjectOption {
+    from {
+        transform: scale(0, 0);
+    }
+
+    to {
+        transform: scale(100%, 100%);
+    }
+}
+
+.dashboard .body .dashboard-content .project .project-list .project-item .top-container .right svg {
+    cursor: pointer;
+    color: #484848;
+}
+
+@media screen and (max-width: 497px) {
+    .dashboard .body .dashboard-content .task {
+        width: 776px;
+    }
+}
+
+.dashboard .body .dashboard-content .task, .project {
+    position: relative;
+}
+
+.dashboard .body .dashboard-content .task .add-task, .project .add-project{
+    height: fit-content;
+    position: absolute;
+    font-size: 28px;
+    padding: 11px 18px;
+    left: 50%;
+    top: 0;
+    transform: translate(0, -50%);
+    border-radius: 50%;
+    background-color: #fff;
+    color: #000;
+    animation: addTaskShadow 3s ease-in-out infinite;
+}
+
+@media screen and (max-width: 497px) {
+    .dashboard .body .dashboard-content .task .add-task, .project .add-project{
+        left: 2%;
+        top: 9%;
+        z-index: 2;
+    }
+}
+
+.dashboard .body .dashboard-content .task .add-task::after, .project .add-project::after {
+    content: "+";
+    font-size: 15px;
+    font-weight: 600;
+    position: absolute;
+    top: 32px;
+    right: 12px;
+    background-color: rgba(255, 255, 255, 1);
+    border-radius: 50%;
+    padding: 0px 7px;
+}
+
+@keyframes addTaskShadow {
+    0% {
+        box-shadow: 0px 1px 3px #000;
+    }
+
+    30% {
+        box-shadow: 0px 1px 5px #000;
+    }
+
+    50% {
+        box-shadow: 0px 1px 10px #000;
+    }
+
+    70% {
+        box-shadow: 0px 1px 5px #000;
+    }
+
+    100% {
+        box-shadow: 0px 1px 3px #000;
+    }
+}
+
+.dashboard .body .dashboard-content .task .add-task:hover, .project .add-project:hover {
+    cursor: pointer;
+    background-color: #181818;
+    color: #fff;
+}
+
+.dashboard .body .dashboard-content .task .add-task:hover::after, .project .add-project:hover::after {
+    color: #000;
+}
+
+.dashboard .body .dashboard-content .task table {
+    height: fit-content;
+}
+
+.dashboard .body .dashboard-content .task td,
+th {
+    vertical-align: middle;
+}
+
+.dashboard .body .dashboard-content .task th {
+    text-transform: uppercase;
+}
+
+.dashboard .body .dashboard-content .task td {
+    color: #686666;
+    text-transform: capitalize;
+}
+
+.dashboard .body .dashboard-content .task td.current-user-task {
+    background-color: #f3f3f3;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+.dashboard .body .dashboard-content .task td .task-complete {
+    text-decoration: line-through;
+}
+
+.dashboard .body .dashboard-content .task td.priority p, td.status p {
+    color: #fff;
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 5px;
+}
+
+.dashboard .body .dashboard-content .task td.priority p.Low {
+    background-color: var(--low);
+}
+
+.dashboard .body .dashboard-content .task td.priority p.Medium {
+    background-color: var(--medium);
+}
+
+.dashboard .body .dashboard-content .task td.priority p.High {
+    background-color: var(--high);
+}
+
+.dashboard .body .dashboard-content .task .team-member-column {
+    display: flex;
+}
+
+.dashboard .body .dashboard-content .task .team-member-column img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    border-radius: 50%;
+}
+
+.dashboard .body .dashboard-content .task td .action {
+    display: flex;
+    justify-content: space-around;
+    position: relative;
+}
+
+.dashboard .body .dashboard-content .task td .action .delete-confirmation {
+    position: absolute;
+    right: 17%;
+    width: 0;
+    height: 0;
+    z-index: 4;
+}
+
+@media screen and (max-width:1040px){
+    .dashboard .body .dashboard-content .task td .action .delete-confirmation {
+        right: 13%;
+    }
+}
+
+@media screen and (max-width:847px){
+    .dashboard .body .dashboard-content .task td .action .delete-confirmation {
+        right: 8%;
+    }
+}
+
+.dashboard .body .dashboard-content .task td .action .delete-confirmation.active {
+    animation: deleteTask .2s ease-in-out forwards;
+}
+
+@keyframes deleteTask {
+    from {
+        width: 0;
+        height: 0;
+    }
+
+    to {
+        width: initial;
+        height: initial;
+    }
+}
+
+.dashboard .body .dashboard-content .task td .action .delete-confirmation img {
+    width: 22px;
+    border-radius: 50%;
+}
+
+
+.dashboard .body .dashboard-content .task td .action .edit,
+.delete {
+    cursor: pointer;
+
+}
+
+.dashboard .body .dashboard-content .task td .action .edit:hover,
+.delete:hover {
+    transform: scale(110%);
+}
+
+.dashboard .body .dashboard-content .task td .action .edit {
+    color: var(--edit);
+}
+
+.dashboard .body .dashboard-content .task td .action .delete {
+    color: var(--delete);
+}
+
+.profil-form {
+    position: relative;
+    overflow: hidden;
+}
+
+.profil-form .loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    height: 100%;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #fff;
+    z-index: 3;
+}
+
+.profil-form .loading.hide {
+    animation: hideLoadingBackground 6s ease forwards;
+}
+
+@keyframes hideLoadingBackground {
+    from {
+        margin-left: 0;
+    }
+
+    to {
+        margin-left: 100%;
+        opacity: 0;
+    }
+}
+
+.profil-form .loading.hide img {
+    animation: hideLoading 10s ease forwards;
+}
+
+@keyframes hideLoading {
+    from {
+        transform: translateX(0);
+    }
+
+    to {
+        transform: translateX(500%);
+    }
+
+}
+
+.profil-form .fields-img {
+    position: relative;
+}
+
+.profil-form .fields-img .img {
+    width: 256px;
+    height: 256px;
+    border-radius: 50%;
+    margin: 0 auto;
+    position: relative;
+    overflow: hidden;
+}
+
+
+@keyframes imageUploadLoading {
+    from {
+        opacity: .9;
+    }
+
+    to {
+        opacity: .7;
+    }
+}
+
+
+
+.profil-form .fields-img svg {
+    position: absolute;
+    bottom: 34px;
+    left: 68%;
+    color: #fff;
+    border: solid 2px;
+    padding: 7px;
+    background: #505078;
+    border-radius: 50%;
+}
+
+.profil-form .fields-img .input-file {
+    position: absolute;
+    bottom: 34px;
+    left: 68%;
+    width: 34px;
+    opacity: 0;
+}
+
+
+.modal-dialog .fields.error {
+    border: 2px solid #ff4f5a;
+}
+
+.modal-dialog .modal-footer .btn-secondary {
+    color: #6c757d;
+}
+
+.modal-dialog .modal-footer .btn-primary {
+    color: #0d6efd;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-dialog .modal-footer .btn-danger {
+    color: #dc3545;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-dialog .modal-footer .btn-secondary:hover,
+.modal-dialog .modal-footer .btn-primary:hover,
+.modal-dialog .modal-footer .btn-danger:hover {
+    color: #fff;
+}
+
+.modal-dialog .modal-footer .save-loading {
+    background-color: #0d6efd;
+}
+
+.modal-dialog .modal-footer .save-close-loading {
+    background-color: #dc3545;
+}
+
+.modal-dialog .modal-footer .save-loading,
+.save-close-loading {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+}
+
+.modal-dialog .modal-footer .save-loading.active,
+.save-close-loading.active {
+    animation: showSaveLoading .8s ease infinite;
+}
+
+@keyframes showSaveLoading {
+    from {
+        width: 0;
+        height: 0;
+        opacity: 0.4;
+    }
+
+    to {
+        width: 200px;
+        height: 200px;
+        opacity: 0.8;
+    }
+}
+
+.modal-dialog .modal-footer .btn-secondary:hover,
+.modal-dialog .modal-footer .btn-primary:disabled,
+.modal-dialog .modal-footer .btn-danger:disabled {
+    color: #fff;
+}
+
+.modal-dialog .project-form .fields .list-all-participant {
+    background-color: #fff;
+    padding: 10px;
+    box-shadow: 0px 5px 17px #c3c3c3;
+    position: absolute;
+    width: 100%;
+    z-index: 3;
+    display: none;
+}
+
+.modal-dialog .project-form .fields .list-all-participant.active {
+    display: block;
+    position: relative;
+    overflow: hidden;
+}
+
+.modal-dialog .project-form .fields .list-all-participant.active .loading {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    background: #fff;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-dialog .project-form .fields .list-all-participant.active .loading.hide {
+    animation: hideLoadingBackground 6s ease forwards;
+}
+
+.modal-dialog .project-form .fields .list-all-participant.active .loading img {
+    width: 40px;
+}
+
+.modal-dialog .project-form .fields .list-all-participant.active .loading.hide img {
+    animation: hideLoading 10s ease forwards;
+}
+
+.modal-dialog .project-form .fields .list-all-participant ul li {
+    display: flex;
+    align-items: center;
+    padding: 7px;
+
+}
+
+/* .modal-dialog .project-form .fields .list-all-participant ul li:hover {
+    cursor: pointer;
+    background-color: #a9a9a9;
+} */
+
+.modal-dialog .project-form .fields .list-all-participant ul li span {
+    display: inline-block;
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    overflow: hidden;
+    margin-right: 5px;
+}
+
+.modal-dialog .project-form .fields .list-all-participant ul li p {
+    font-size: 12px;
+}
+
+.modal-dialog .project-form .fields .list-all-participant ul li button {
+    background: #fff;
+    border: solid 1px #000;
+    padding: 0px 10px;
+    border-radius: 7px;
+    font-size: 11px;
+    text-align: center;
+    color: #000;
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modal-dialog .project-form .fields .list-all-participant ul li button.disabled {
+    background: #999;
+    border: none;
+    color: #fff;
+}
+
+
+.modal-dialog .project-form .fields .list-all-participant ul li button:hover {
+    border-color: #0d6efd;
+    color: #0d6efd;
+}
+
+.modal-dialog .project-form .fields .list-all-participant ul li button.disabled:hover {
+    color: #fff;
+    border-color: none;
+}
+
+.modal-dialog .project-form .fields .list-all-participant ul li button span {
+    display: none;
+}
+
+.modal-dialog .project-form .fields .list-all-participant ul li button span.checked {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0;
+}
+
+/* .modal-dialog .project-form .fields .list-all-participant ul li p:hover {
+    font-weight: 500;
+    cursor: pointer;
+} */
+
+.modal-dialog .creator-list {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #1f1f1f;
+}
+
+.modal-dialog .creator-list ul {
+    display: flex;
+    margin-left: 10px;
+}
+
+.modal-dialog .creator-list ul li {
+    width: 32px;
+    display: inline-block;
+    height: 32px;
+    overflow: hidden;
+    border-radius: 50%;
+}
+
+.modal-dialog .project-form .participant-list {
+    margin-top: 10px;
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+    color: #1f1f1f;
+}
+
+.modal-dialog .project-form .participant-list .no-participant-yet {
+    margin-left: 5px;
+    font-size: 10px;
+    color: #dd0e0e;
+}
+
+.modal-dialog .project-form .participant-list ul {
+    display: flex;
+    margin-left: 10px;
+    flex-wrap: wrap;
+}
+
+.modal-dialog .project-form .participant-list ul li {
+    display: flex;
+    align-items: center;
+    width: 100px;
+    background-color: #257cfd;
+    padding: 10px;
+    border-radius: 29px;
+    margin-left: 5px;
+    margin-top: 5px;
+}
+
+.modal-dialog .project-form .participant-list ul li img {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+}
+
+.modal-dialog .project-form .participant-list ul li span {
+    font-size: 10px;
+    white-space: nowrap;
+    margin-left: 3px;
+    width: 30px;
+    overflow: hidden;
+    color: #fff;
+}
+
+.modal-dialog .project-form .participant-list ul li span:last-child {
+    background-color: #fff;
+    color: #257cfd;
+    text-align: center;
+    width: 15px;
+    border-radius: 50%;
+    margin-left: 5px;
+    font-weight: bold;
+}
+
+.modal-dialog .project-form .participant-list ul li span:last-child:hover {
+    transform: scale(110%, 110%);
+    cursor: pointer;
+}
+
+.modal-footer {
+    justify-content: space-between;
+}
+
+.modal-footer .button-modal button:first-child,
+button:nth-child(2) {
+    margin-right: 10px;
+}
+
+
+
+.task-form .fields .input {
+    position: relative;
+}
+
+.task-form .fields .input .value-priority, .value-status {
+    position: absolute;
+    top: 28px;
+    z-index: 2;
+    left: 8px;
+    color: #fff;
+}
+
+.task-form .fields .input .value-priority.Low {
+    background-color: var(--low);
+
+}
+
+.task-form .fields .input .value-priority.Medium {
+    background-color: var(--medium);
+}
+
+.task-form .fields .input .value-priority.High {
+    background-color: var(--high);
+}
+
+
+
+.task-form .fields .input ul {
+    position: absolute;
+    background-color: #fff;
+    width: 100%;
+    z-index: 4;
+    box-shadow: 0px 1px 6Px #9b9999;
+    height: 0;
+    overflow: hidden;
+}
+
+.task-form .fields .input ul.priority-list.active,
+ul.status-list.active,
+ul.member-list.active {
+    animation: showTaskDropdown .2s ease-in forwards;
+}
+
+@keyframes showTaskDropdown {
+    from {
+        height: 0;
+        padding: 0;
+        overflow: hidden;
+    }
+
+    to {
+        height: fit-content;
+        padding: 5px 13px;
+        overflow: auto;
+    }
+}
+
+
+.task-form .fields .input .task-input-disabled {
+    background-color: rgb(235 235 235 / 50%);
+    ;
+}
+
+.task-form .fields .input .task-input-disabled:hover {
+    cursor: not-allowed;
+}
+
+
+.task-form .fields .input ul li {
+    margin-bottom: 5px;
+}
+
+.task-form .fields .input ul.priority-list li {
+    color: #fff;
+}
+
+.task-form .fields .input ul.status-list li {
+    margin-bottom: 10px;
+}
+
+.task-form .fields .input ul.priority-list li p,
+.task-form .fields .input .value-priority,
+.task-form .fields .input ul.status-list li p,
+.task-form .fields .input .value-status
+ {
+    display: inline-block;
+    padding: 1px 10px;
+    border-radius: 5px;
+}
+
+.task-form .fields .input ul.priority-list li p:hover {
+    transform: scale(105%);
+    cursor: pointer;
+}
+
+.task-form .fields .input ul.status-list li p:hover,
+ul.member-list li p:hover {
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.task-form .fields .input ul.priority-list li:first-child p {
+    background-color: var(--low);
+}
+
+
+.task-form .fields .input ul.priority-list li:nth-child(2) p {
+    background-color: var(--medium);
+}
+
+.task-form .fields .input ul.priority-list li:last-child p {
+    background-color: var(--high);
+}
+
+.task-form .fields .input ul.status-list li p {
+    display: inline;
+}
+
+.task-form .fields .input ul.status-list li:first-child p,  .input .value-status.in_progress, .dashboard .body .dashboard-content .task td.status p.in_progress {
+    color: var(--progress);
+    border: solid 1px var(--progress);
+}
+
+.task-form .fields .input ul.status-list li:nth-child(2) p, .input .value-status.pending_validation, .dashboard .body .dashboard-content .task td.status p.pending_validation {
+    color: var(--checked);
+    border: solid 1px var(--checked);
+}
+
+.task-form .fields .input ul.status-list li:last-child p, .input .value-status.complete, .dashboard .body .dashboard-content .task td.status p.complete {
+    color: var(--complete);
+    border: solid 1px var(--complete);
+}
+
+.task-form .fields .input ul.status-list li.hide-status {
+    display: none;
+}
+
+.task-form .fields .input .value-status {
+    background-color: #fff;
+}
+
+
+.task-form .fields .input ul.member-list li {
+    display: flex;
+    align-items: center;
+}
+
+.task-form .fields .input ul.member-list li img {
+    width: 24px;
+    height: 24px;
+    margin-right: 10px;
+    border-radius: 50%;
+}

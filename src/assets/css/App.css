@@ -49,7 +49,7 @@
 .content .right .fields-container .fields,
 .profil-form .fields,
 .project-form .fields,
-.task-form .fields {
+.task-form .fields, .task .filter-by .fields {
     border: 1px solid #e5e5e5;
     border-radius: 5px;
     margin-top: 10px;
@@ -61,7 +61,8 @@
 .content .right .fields-container .fields .fields-tmp,
 .profil-form .fields .fields-tmp,
 .project-form .fields .fields-tmp,
-.task-form .fields .fields-tmp {
+.task-form .fields .fields-tmp,
+.task .filter-by .fields .fields-tmp {
     width: 100%;
     border-radius: 5px;
     height: 100%;
@@ -74,7 +75,8 @@
 .content .right .fields-container .fields .fields-tmp.active,
 .profil-form .fields .fields-tmp.active,
 .project-form .fields .fields-tmp.active,
-.task-form .fields .fields-tmp.active {
+.task-form .fields .fields-tmp.active,
+.task .filter-by .fields .fields-tmp.active {
     animation: fieldsActiveAnimation .5s ease forwards;
 }
 
@@ -124,7 +126,8 @@
 .content .right .fields-container .fields label,
 .profil-form .fields label,
 .project-form .fields label,
-.task-form .fields label {
+.task-form .fields label,
+.task .filter-by .fields label {
     position: absolute;
     top: 50%;
     left: 10px;
@@ -139,7 +142,8 @@
 .content .right .fields-container .fields label.active,
 .profil-form .fields label.active,
 .project-form .fields label.active,
-.task-form .fields label.active {
+.task-form .fields label.active,
+.task .filter-by .fields label.active {
     animation: labelActiveAnimation .4s ease forwards;
 }
 
@@ -169,7 +173,8 @@ input:-webkit-autofill:active {
 .content .right .fields-container .fields input,
 .profil-form .fields input,
 .project-form .fields input,
-.task-form .fields input {
+.task-form .fields input,
+.task .filter-by .fields input {
     position: relative;
     z-index: 2;
     height: 78px;
@@ -181,7 +186,8 @@ input:-webkit-autofill:active {
 .content .right .fields-container .fields input:focus,
 .profil-form .fields input:focus,
 .project-form .fields input:focus,
-.task-form .fields input:focus {
+.task-form .fields input:focus,
+.task .filter-by .fields input:focus {
     outline: none !important;
 }
 
@@ -349,34 +355,38 @@ input:-webkit-autofill:active {
 
 .dashboard .body .breadcrumbs {
     display: flex;
+    position: relative;
+    overflow: hidden;
 }
 
-/* .dashboard .body .breadcrumbs .crumb::after {
+ .dashboard .body .breadcrumbs .crumb::after {
     content: ">";
-    font-size: 34px;
-    color: #040404;
-    font-weight: 600;
+    font-size: 158px;
+    color: #000000;
+    position: absolute;
+    top: -82px;
+    background-color: #ffffff;
 }
 
-.dashboard .body .breadcrumbs .crumb:last-child::after {
+
+/*.dashboard .body .breadcrumbs .crumb:last-child::after {
     content: "";
 } */
 
 .dashboard .body .breadcrumbs .crumb {
     background-color: #ffffff;
     padding: 10px 10px;
-    border-radius: 10px 30px 0 0;
-    border: solid 1px #ababab;
     border-bottom: none;
+    margin-right: 70px;
 }
 
 /* .dashboard .body .breadcrumbs .crumb:first-child {
     padding-right: 0;
-}
+} */
 
 .dashboard .body .breadcrumbs .crumb:last-child {
-    padding-left: 0;
-} */
+    border-radius:10px;
+}
 
 
 .dashboard .body .breadcrumbs .crumb a {
@@ -565,8 +575,15 @@ input:-webkit-autofill:active {
     }
 }
 
-.dashboard .body .dashboard-content .task, .project {
+
+.dashboard .body .dashboard-content .project {
     position: relative;
+}
+
+.dashboard .body .dashboard-content .task .task-tab-container {
+    margin-top: 30px;
+    position: relative;
+    width: 100%;
 }
 
 .dashboard .body .dashboard-content .task .add-task, .project .add-project{
@@ -635,6 +652,70 @@ input:-webkit-autofill:active {
     color: #000;
 }
 
+
+.dashboard .body .dashboard-content .task .filter-by {
+    display: flex;
+    align-items: center;
+    margin-top: 19px;
+    margin-bottom: 26px;
+    color: #5b5b5b;
+    justify-content: center;
+    width: 100%;
+}
+
+.dashboard .body .dashboard-content .task .filter-by p {
+    margin-right: 10px;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+
+.dashboard .body .dashboard-content .task .filter-by .fields {
+    display: flex;
+    flex-direction: column;
+    margin-right: 10px;
+}
+
+.dashboard .body .dashboard-content .task .filter-by .fields label {
+  
+    margin-bottom: 5px;
+}
+
+
+.dashboard .body .dashboard-content .task .filter-by .not-fields .reset {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100%;
+} 
+
+.dashboard .body .dashboard-content .task .filter-by .not-fields .reset svg {
+    font-size: 34px;
+    border: solid 1px #bdbbbb;
+    border-radius: 50%;
+    padding: 5px;
+}
+
+.dashboard .body .dashboard-content .task .filter-by .not-fields .reset svg:hover {
+    transform: scale(105%);
+    cursor: pointer;
+    background-color: #bdbbbb;
+}
+
+.dashboard .body .dashboard-content .task .filter-by .not-fields .reset svg:active {
+    animation: rotateReset .1s ease-in-out;
+}
+
+@keyframes rotateReset {
+    from {
+        transform: rotate(0);
+    }
+
+    to {
+        transform: rotate(180deg);
+    }
+
+}
 .dashboard .body .dashboard-content .task table {
     height: fit-content;
 }
@@ -1128,11 +1209,11 @@ button:nth-child(2) {
 
 
 
-.task-form .fields .input {
+.task-form .fields .input, .dashboard-content .task .fields .input {
     position: relative;
 }
 
-.task-form .fields .input .value-priority, .value-status {
+.task-form .fields .input .value-priority, .value-status, .filter-value-priority, .filter-value-status {
     position: absolute;
     top: 28px;
     z-index: 2;
@@ -1140,24 +1221,24 @@ button:nth-child(2) {
     color: #fff;
 }
 
-.task-form .fields .input .value-priority.Low {
+.task-form .fields .input .value-priority.Low, .filter-value-priority.Low {
     background-color: var(--low);
 
 }
 
-.task-form .fields .input .value-priority.Medium {
+.task-form .fields .input .value-priority.Medium, .filter-value-priority.Medium {
     background-color: var(--medium);
 }
 
-.task-form .fields .input .value-priority.High {
+.task-form .fields .input .value-priority.High, .filter-value-priority.High {
     background-color: var(--high);
 }
 
 
 
-.task-form .fields .input ul {
+.task-form .fields .input ul, .dashboard-content .task .fields .input ul.filter-status-list, .dashboard-content .task .fields .input ul.filter-priority-list, .dashboard-content .task .fields .input ul.filter-member-list {
     position: absolute;
-    background-color: #fff;
+    background-color: #ffffff;
     width: 100%;
     z-index: 4;
     box-shadow: 0px 1px 6Px #9b9999;
@@ -1167,7 +1248,7 @@ button:nth-child(2) {
 
 .task-form .fields .input ul.priority-list.active,
 ul.status-list.active,
-ul.member-list.active {
+ul.member-list.active, ul.filter-status-list.active, ul.filter-priority-list.active, ul.filter-member-list.active {
     animation: showTaskDropdown .2s ease-in forwards;
 }
 
@@ -1196,67 +1277,76 @@ ul.member-list.active {
 }
 
 
-.task-form .fields .input ul li {
+.task-form .fields .input ul li, 
+.dashboard-content .task .fields .input .filter-priority-list li,
+.dashboard-content .task .fields .input ul li {
     margin-bottom: 5px;
 }
 
-.task-form .fields .input ul.priority-list li {
+.task-form .fields .input ul.priority-list li, 
+.dashboard-content .task .fields .input .filter-priority-list li  {
     color: #fff;
 }
 
-.task-form .fields .input ul.status-list li {
+.task-form .fields .input ul.status-list li, .filter-status-list li {
     margin-bottom: 10px;
 }
 
 .task-form .fields .input ul.priority-list li p,
 .task-form .fields .input .value-priority,
 .task-form .fields .input ul.status-list li p,
-.task-form .fields .input .value-status
+.task-form .fields .input .value-status,
+.dashboard-content .task .fields .input .filter-value-priority,
+.dashboard-content .task .fields .input .filter-value-status,
+.dashboard-content .task .fields .input .filter-priority-list li p,
+.filter-status-list li p 
  {
     display: inline-block;
     padding: 1px 10px;
     border-radius: 5px;
 }
 
-.task-form .fields .input ul.priority-list li p:hover {
+.task-form .fields .input ul.priority-list li p:hover,  .dashboard-content .task .fields .input .filter-priority-list li p:hover {
     transform: scale(105%);
     cursor: pointer;
 }
 
 .task-form .fields .input ul.status-list li p:hover,
-ul.member-list li p:hover {
+ul.member-list li p:hover, .dashboard-content .task .fields .input .filter-priority-list li p:hover,
+.filter-status-list li p:hover, .dashboard-content .task .fields .input .filter-member-list li p:hover{
     cursor: pointer;
     font-weight: 500;
 }
 
-.task-form .fields .input ul.priority-list li:first-child p {
+.task-form .fields .input ul.priority-list li:first-child p, .dashboard-content .task .fields .input .filter-priority-list li:first-child p  {
     background-color: var(--low);
 }
 
 
-.task-form .fields .input ul.priority-list li:nth-child(2) p {
+.task-form .fields .input ul.priority-list li:nth-child(2) p, .dashboard-content .task .fields .input .filter-priority-list li:nth-child(2) p  {
     background-color: var(--medium);
 }
 
-.task-form .fields .input ul.priority-list li:last-child p {
+.task-form .fields .input ul.priority-list li:last-child p, .dashboard-content .task .fields .input .filter-priority-list li:last-child p{
     background-color: var(--high);
 }
 
-.task-form .fields .input ul.status-list li p {
+.task-form .fields .input ul.status-list li p, .filter-status-list li p {
     display: inline;
 }
 
-.task-form .fields .input ul.status-list li:first-child p,  .input .value-status.in_progress, .dashboard .body .dashboard-content .task td.status p.in_progress {
+.task-form .fields .input ul.status-list li:first-child p,  .input .value-status.in_progress, .dashboard .body .dashboard-content .task td.status p.in_progress,
+.dashboard-content .task .fields .input .filter-value-status.in_progress, .filter-status-list li:first-child p {
     color: var(--progress);
     border: solid 1px var(--progress);
 }
 
-.task-form .fields .input ul.status-list li:nth-child(2) p, .input .value-status.pending_validation, .dashboard .body .dashboard-content .task td.status p.pending_validation {
+.task-form .fields .input ul.status-list li:nth-child(2) p, .input .value-status.pending_validation, .dashboard .body .dashboard-content .task td.status p.pending_validation, .filter-value-status.pending_validation, .filter-status-list li:nth-child(2) p {
     color: var(--checked);
     border: solid 1px var(--checked);
 }
 
-.task-form .fields .input ul.status-list li:last-child p, .input .value-status.complete, .dashboard .body .dashboard-content .task td.status p.complete {
+.task-form .fields .input ul.status-list li:last-child p, .input .value-status.complete, .dashboard .body .dashboard-content .task td.status p.complete, .filter-value-status.complete, .filter-status-list li:last-child p {
     color: var(--complete);
     border: solid 1px var(--complete);
 }
@@ -1265,17 +1355,17 @@ ul.member-list li p:hover {
     display: none;
 }
 
-.task-form .fields .input .value-status {
+.task-form .fields .input .value-status, .dashboard-content .task .input .filter-value-status {
     background-color: #fff;
 }
 
 
-.task-form .fields .input ul.member-list li {
+.task-form .fields .input ul.member-list li, .dashboard-content .task .input ul.filter-member-list li {
     display: flex;
     align-items: center;
 }
 
-.task-form .fields .input ul.member-list li img {
+.task-form .fields .input ul.member-list li img, .dashboard-content .task .input ul.filter-member-list li img {
     width: 24px;
     height: 24px;
     margin-right: 10px;

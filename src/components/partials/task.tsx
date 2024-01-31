@@ -9,6 +9,17 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faPenToSquare } from '@fortawesome/free-regular-svg-icons';
 import { faTrashCan } from '@fortawesome/free-regular-svg-icons';
 import { faListAlt } from '@fortawesome/free-regular-svg-icons';
+import { faArrowsRotate } from '@fortawesome/free-solid-svg-icons';
+
+interface TaskInterface {
+  priority: string,
+  status: string,
+  member: {
+    _id: string,
+    username: string
+  },
+  project: string
+}
 
 export const Task = () => {
   const server_domain = import.meta.env.VITE_REACT_SERVER_DOMAIN;
@@ -25,22 +36,28 @@ export const Task = () => {
   }
 
   const [task, setTask] = useState<Array<Record<string, string | any>>>([]);
+  const [isTaskFilter, setIsTaskFilter] = useState<boolean>(false);
   const [show, setShow] = useState(false);
   const [userValues, setUserValues] = useState<Array<Record<string, string | string>>>([]);
   const [btnSaveLoading, setBtnSaveLoading] = useState<string>("");
   const [btnSaveDisabled, setBtnSaveDisable] = useState<boolean>(false);
   const [showPriorityList, setShowPriorityList] = useState<boolean>(false);
   const [showStatusList, setShowStatusList] = useState<boolean>(false);
+  const [showFilterPriorityList, setShowFilterPriorityList] = useState<boolean>(false);
+  const [showFilterStatusList, setShowFilterStatusList] = useState<boolean>(false);
   const [showMemberList, setShowMemberList] = useState<boolean>(false);
+  const [showFilterMemberList, setShowFilterMemberList] = useState<boolean>(false);
   const [memberValue, setMemberValue] = useState<string>("");
+  // const [filterMemberValue, setFiterMemberValue] = useState<string>("");
   const [data, setData] = useState<Record<string, string>>(initializedData);
+  const [filterData, setFilterData] = useState<Record<string, string>>(initializedData);
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
   const [isEditTask, setIsEditTask] = useState<boolean>(false);
   const [isSomethingAdded, setIsSomethingAdded] = useState<boolean>(false);
   const [loadingDeleteSelected, setLoadingDeleteSelected] = useState<Array<boolean>>([]);
   const [isOwnerProject, setIsOwnerProject] = useState<boolean>(false);
-  const [isCurrentTaskUserConnected, setIsCurrentTaskUserConnected ] = useState<Array<boolean>>([]);
+  const [isCurrentTaskUserConnected, setIsCurrentTaskUserConnected] = useState<Array<boolean>>([]);
 
 
 
@@ -48,10 +65,16 @@ export const Task = () => {
   const task_name__field_tmp_ref = createRef<HTMLDivElement>();
   const task_priority_label_ref = createRef<HTMLLabelElement>();
   const task_priority_field_tmp_ref = createRef<HTMLDivElement>();
+  const task_filter_priority_label_ref = createRef<HTMLLabelElement>();
+  const task_filter_priority_field_tmp_ref = createRef<HTMLDivElement>();
   const task_status_label_ref = createRef<HTMLLabelElement>();
   const task_status_field_tmp_ref = createRef<HTMLDivElement>();
+  const task_filter_status_label_ref = createRef<HTMLLabelElement>();
+  const task_filter_status_field_tmp_ref = createRef<HTMLDivElement>();
   const task_member_label_ref = createRef<HTMLLabelElement>();
   const task_member_field_tmp_ref = createRef<HTMLDivElement>();
+  const task_filter_member_label_ref = createRef<HTMLLabelElement>();
+  const task_filter_member_field_tmp_ref = createRef<HTMLDivElement>();
 
   useEffect(() => {
     const rememberedUserId = sessionStorage.getItem('userId');
@@ -62,10 +85,11 @@ export const Task = () => {
         axios.post(server_domain + "/getTask", { project_id: project_id })
           .then((result) => {
             if (result) {
-              const task = result.data.result;
+              const task: Array<TaskInterface> = result.data.result;
               const delete_list_tab = [];
               const user_task_owner = [];
-              const task_reorganise = reorganiseTask(task);
+              const task_filtered = taskAfterFiltering(task);
+              const task_reorganise = reorganiseTask(task_filtered);
 
               for (let i = 0; i < task_reorganise.length; i++) {
                 delete_list_tab.push(false);
@@ -76,7 +100,6 @@ export const Task = () => {
                   user_task_owner.push(false);
                 }
               }
-
 
               setLoadingDeleteSelected(delete_list_tab);
               setTask(task_reorganise);
@@ -103,7 +126,63 @@ export const Task = () => {
       }).catch(error => alert("Project participant creation error" + error));
   }, [isSomethingAdded]);
 
-  const reorganiseTask = (task: [{priority: "", member: {_id: "                                                    ,"}}]) => {
+  const taskAfterFiltering = (task: Array<TaskInterface>) => {
+    const priority_filter = filterData.priority;
+    const status_filter = filterData.status;
+    const member_filter = filterData.member;
+    const task_to_filtre = [...task];
+
+    if (isTaskFilter) {
+      if (priority_filter != "") {
+        filtrate(priority_filter, task_to_filtre, 'priority');
+      }
+
+      if (status_filter != "") {
+        filtrate(status_filter, task_to_filtre, 'status');
+      }
+
+      if (member_filter != "") {
+        filtrate(member_filter, task_to_filtre, 'member');
+      }
+    }
+
+    return task_to_filtre;
+
+  }
+
+  const filtrate = (filter: string, task_to_filtre: any, field: "priority" | "status" | "member") => {
+    let task_filtered = false
+
+    while (!task_filtered) {
+      if (task_to_filtre.length < 1) {
+        task_filtered = true;
+      }
+
+      for (let i = 0; i < task_to_filtre.length; i++) {
+        let task_tmp = (field.includes("member")) ? task_to_filtre[i].member['username'] : task_to_filtre[i][field];
+        if (!task_tmp.includes(filter)) {
+          task_to_filtre.splice(i, 1);
+          task_filtered = false;
+          break;
+        } else {
+          task_filtered = true;
+        }
+      };
+    }
+  }
+
+  const refreshFilter = () => {
+    task_filter_priority_label_ref.current?.classList.remove('active');
+    task_filter_status_label_ref.current?.classList.remove('active');
+    task_filter_member_label_ref.current?.classList.remove('active');
+
+    setIsTaskFilter(false);
+    setFilterData(initializedData);
+    setIsSomethingAdded(!isSomethingAdded);
+
+  }
+
+  const reorganiseTask = (task: Array<TaskInterface>) => {
     const task_reorganise = []
     const priority = [
       "High",
@@ -151,17 +230,37 @@ export const Task = () => {
     if (input_focused_class.includes("name")) {
       task_name_label_ref.current?.classList.add('active');
       task_name__field_tmp_ref.current?.classList.add('active');
+
     } else if (input_focused_class.includes("priority")) {
       // setInputLabelOnTop(false);
       setShowPriorityList(true);
       task_priority_field_tmp_ref.current?.classList.add('active');
+
     } else if (input_focused_class.includes("status")) {
       setShowStatusList(true);
       task_status_field_tmp_ref.current?.classList.add('active');
+
     } else {
       setShowMemberList(true);
       task_member_field_tmp_ref.current?.classList.add('active');
       task_member_label_ref.current?.classList.add('active');
+    }
+
+    if (input_focused_class.includes('filter-priority')) {
+      setShowFilterPriorityList(true);
+      task_filter_priority_label_ref.current?.classList.add('active');
+      task_filter_priority_field_tmp_ref.current?.classList.add('active');
+
+    } else if (input_focused_class.includes('filter-status')) {
+      setShowFilterStatusList(true);
+      task_filter_status_label_ref.current?.classList.add('active');
+      task_filter_status_field_tmp_ref.current?.classList.add('active');
+
+    } else if (input_focused_class.includes('filter-member')) {
+      setShowFilterMemberList(true);
+      task_filter_member_label_ref.current?.classList.add('active');
+      task_filter_member_field_tmp_ref.current?.classList.add('active');
+
     }
 
     setIsError(false);
@@ -205,10 +304,38 @@ export const Task = () => {
       }, 500);
     }
 
+    if (input_blured_class.includes('filter-priority')) {
+      setTimeout(() => {
+        if (value == "") {
+          task_filter_priority_label_ref.current?.classList.remove('active');
+        }
+        setShowFilterPriorityList(false);
+      }, 500);
+
+    } else if (input_blured_class.includes('filter-status')) {
+
+      setTimeout(() => {
+        if (value == "") {
+          task_filter_status_label_ref.current?.classList.remove('active');
+        }
+        setShowFilterStatusList(false);
+      }, 500);
+    } else if (input_blured_class.includes('filter-member')) {
+      setTimeout(() => {
+        if (value == "") {
+          task_filter_member_label_ref.current?.classList.remove('active');
+        }
+        setShowFilterMemberList(false);
+      }, 500);
+    }
+
     task_priority_field_tmp_ref.current?.classList.remove('active');
     task_status_field_tmp_ref.current?.classList.remove('active');
     task_member_field_tmp_ref.current?.classList.remove('active');
     task_name__field_tmp_ref.current?.classList.remove('active');
+    task_filter_priority_field_tmp_ref.current?.classList.remove('active');
+    task_filter_status_field_tmp_ref.current?.classList.remove('active');
+    task_filter_member_field_tmp_ref.current?.classList.remove('active');
   }
 
 
@@ -234,22 +361,33 @@ export const Task = () => {
 
   const assignValue = (e: MouseEvent<HTMLParagraphElement>) => {
     const field_class = e.currentTarget.className;
+    const field = field_class.split('-')[0];
     const value = e.currentTarget.innerHTML;
 
-    if (field_class.includes("priority-item")) {
+    if (field_class.includes("priority-item") || field_class.includes("status-item")) {
       setData({
         ...data,
-        ['priority']: value
-      });
-    } else if (field_class.includes("status-item")) {
-      setData({
-        ...data,
-        ['status']: value
+        [field]: value
       });
     } else {
       setMemberValue(value);
     }
   }
+
+  const assignFilterValue = (e: MouseEvent<HTMLParagraphElement>) => {
+    const field_class = e.currentTarget.className;
+    const field = field_class.split('-')[0];
+    const value = e.currentTarget.innerHTML;
+
+    setFilterData(({
+      ...filterData,
+      [field]: value
+    }));
+
+    setIsTaskFilter(true);
+    setIsSomethingAdded(!isSomethingAdded);
+  }
+
 
   const assignMemberId = (member_id: string) => {
     setData({
@@ -324,7 +462,7 @@ export const Task = () => {
 
     setBtnSaveLoading("active");
     setBtnSaveDisable(true);
-    
+
     axios.post(server_domain + '/insertTask', { task: data })
       .then((result) => {
         if (result.data.valid) {
@@ -363,67 +501,127 @@ export const Task = () => {
     <Home>
       <>
         <div className="task">
-          {(task.length > 0) ? (
+          {(task.length > 0 || isTaskFilter) ? (
             <>
-              {(isOwnerProject) &&
-                <div className="add-task" onClick={handleModalShow}>
-                    <FontAwesomeIcon  icon={faListAlt} />
-                
+              <div className="filter-by">
+                <p>Filter by:</p>
+                <div className="fields">
+                  <label htmlFor="filter-priority" ref={task_filter_priority_label_ref} className="label-animated" id="taskFilterPriority-label">Priority</label>
+                  <div className="input">
+                    <input type="text" name="filter-priority" id="filter-priority" value={filterData.priority} className={"filter-priority"} onFocus={(e) => increaseTopOfLabel(e)} onBlur={(e) => decreaseTopOfLabel(e)} onChange={(e) => avoidTapInInput(e)} />
+                    <div className={"filter-value-priority " + filterData.priority}>
+                      <p>{filterData.priority}</p>
+                    </div>
+                    <ul className={"filter-priority-list " + ((showFilterPriorityList) ? "active" : "")}>
+                      <li><p onClick={(e) => assignFilterValue(e)} className="priority-item">Low</p></li>
+                      <li><p onClick={(e) => assignFilterValue(e)} className="priority-item">Medium</p></li>
+                      <li><p onClick={(e) => assignFilterValue(e)} className="priority-item">High</p></li>
+                    </ul>
+                  </div>
+                  <div ref={task_filter_priority_field_tmp_ref} className="fields-tmp"></div>
                 </div>
-              } 
-              <table className="table">
-                <thead>
-                  <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Team member</th>
-                    <th scope="col">Task</th>
-                    <th scope="col">Priority</th>
-                    <th scope="col">Status</th>
-                    <th scope="col"> Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {task.map((value, index) => {
-                    return (
-                      <tr key={index}>
-                        <th scope="row">
-                          <p>{index}</p>
-                        </th>
-                        <td  className={(isCurrentTaskUserConnected[index]) ? "current-user-task" : ""}>
-                          <div className="team-member-column">
-                            <img src={value.member['photo' as any]} alt="avatar" />
-                            <p className={(value.status.includes('Complete') ? "task-complete" : "")}>{value.member['username' as any]}</p>
-                          </div>
-                        </td>
-                        <td  className={(isCurrentTaskUserConnected[index]) ? "current-user-task" : ""}>
-                          <p className={(value.status.includes('Complete') ? "task-complete" : "")}>{value.name}</p>
-                        </td>
-                        <td className={"priority " + ((isCurrentTaskUserConnected[index]) ? "current-user-task" : "")}>
-                          <p className={value.priority}>{value.priority}</p>
-                        </td>
-                        <td className={"status " + ((isCurrentTaskUserConnected[index]) ? "current-user-task" : "")}>
-                          <p className={value.status.trim().toLocaleLowerCase().replace(/ /g, '_')}>{value.status}</p>
-                        </td>
-                        <td className={(isCurrentTaskUserConnected[index]) ? "current-user-task" : ""}>
-                          <div className="action">
-                            <div className={"delete-confirmation " + ((loadingDeleteSelected[index]) ? "active" : "")}>
-                              <img src="../src/assets/images/loading-delete.gif" alt="loading" />
+                <div className="fields">
+                  <label htmlFor="filter-status" ref={task_filter_status_label_ref} className="label-animated" id="taskFilterStatus-label">Status</label>
+                  <div className="input">
+                    <input type="text" name="filter-status" id="filter-status" value={filterData.status} className="filter-status" onFocus={(e) => increaseTopOfLabel(e)} onBlur={(e) => decreaseTopOfLabel(e)} onChange={(e) => avoidTapInInput(e)} />
+                    <div className={"filter-value-status " + filterData.status.trim().toLocaleLowerCase().replace(/ /g, '_')}>
+                      <p>{filterData.status}</p>
+                    </div>
+                    <ul className={"filter-status-list " + ((showFilterStatusList) ? "active" : "")}>
+                      <li><p onClick={(e) => assignFilterValue(e)} className="status-item in-progress">In progress</p></li>
+                      <li><p onClick={(e) => assignFilterValue(e)} className="status-item pending_validation">Pending validation</p></li>
+                      <li ><p onClick={(e) => assignFilterValue(e)} className="status-item complete">Complete</p></li>
+                    </ul>
+                  </div>
+                  <div ref={task_filter_status_field_tmp_ref} className="fields-tmp"></div>
+                </div>
+                <div className="fields">
+                  <label htmlFor="filter-member" ref={task_filter_member_label_ref} className="label-animated" id="taskFilterMember-label">Team member</label>
+                  <div className="input">
+                    <input type="text" name="filter-member" value={filterData.member} id="filtermember" className={"filter-member "} onFocus={(e) => increaseTopOfLabel(e)} onBlur={(e) => decreaseTopOfLabel(e)} onChange={(e) => avoidTapInInput(e)} />
+                    <ul className={"filter-member-list " + ((showFilterMemberList) ? "active" : "")}>
+                      {userValues.map((user, index) => {
+                        return (
+                          <li key={index}>
+                            <img src={user.photo} alt="avatar" />
+                            <p onClick={(e) => {
+                              assignFilterValue(e);
+                              // assignFilterMemberId(user._id);
+                            }} className="member-item">{user.username}</p>
+                          </li>
+                        );
+                      })}
+                    </ul>
+                  </div>
+                  <div ref={task_member_field_tmp_ref} className="fields-tmp"></div>
+                </div>
+                <div className="not-fields">
+                  <div className="reset">
+                    <FontAwesomeIcon icon={faArrowsRotate} onClick={refreshFilter} />
+                  </div>
+                </div>
+              </div>
+              <div className="task-tab-container">
+                {(isOwnerProject) &&
+                  <div className="add-task" onClick={handleModalShow}>
+                    <FontAwesomeIcon icon={faListAlt} />
+                  </div>
+                }
+                <table className="table">
+                  <thead>
+                    <tr>
+                      <th scope="col">#</th>
+                      <th scope="col">Team member</th>
+                      <th scope="col">Task</th>
+                      <th scope="col">Priority</th>
+                      <th scope="col">Status</th>
+                      <th scope="col"> Action</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {task.map((value, index) => {
+                      return (
+                        <tr key={index}>
+                          <th scope="row">
+                            <p>{index}</p>
+                          </th>
+                          <td className={(isCurrentTaskUserConnected[index]) ? "current-user-task" : ""}>
+                            <div className="team-member-column">
+                              <img src={value.member['photo' as any]} alt="avatar" />
+                              <p className={(value.status.includes('Complete') ? "task-complete" : "")}>{value.member['username' as any]}</p>
                             </div>
-                            <div className="edit">
-                              <FontAwesomeIcon icon={faPenToSquare} onClick={() => editTask(value._id)}></FontAwesomeIcon>
-                            </div>
-                            {(isOwnerProject) &&
-                              <div className="delete">
-                                <FontAwesomeIcon icon={faTrashCan} onClick={() => deleteTask(value._id, index)}></FontAwesomeIcon>
+                          </td>
+                          <td className={(isCurrentTaskUserConnected[index]) ? "current-user-task" : ""}>
+                            <p className={(value.status.includes('Complete') ? "task-complete" : "")}>{value.name}</p>
+                          </td>
+                          <td className={"priority " + ((isCurrentTaskUserConnected[index]) ? "current-user-task" : "")}>
+                            <p className={value.priority}>{value.priority}</p>
+                          </td>
+                          <td className={"status " + ((isCurrentTaskUserConnected[index]) ? "current-user-task" : "")}>
+                            <p className={value.status.trim().toLocaleLowerCase().replace(/ /g, '_')}>{value.status}</p>
+                          </td>
+                          <td className={(isCurrentTaskUserConnected[index]) ? "current-user-task" : ""}>
+                            <div className="action">
+                              <div className={"delete-confirmation " + ((loadingDeleteSelected[index]) ? "active" : "")}>
+                                <img src="../src/assets/images/loading-delete.gif" alt="loading" />
                               </div>
-                            }
-                          </div>
-                        </td>
-                      </tr>
-                    );
-                  })}
-                </tbody>
-              </table>
+                              <div className="edit">
+                                <FontAwesomeIcon icon={faPenToSquare} onClick={() => editTask(value._id)}></FontAwesomeIcon>
+                              </div>
+                              {(isOwnerProject) &&
+                                <div className="delete">
+                                  <FontAwesomeIcon icon={faTrashCan} onClick={() => deleteTask(value._id, index)}></FontAwesomeIcon>
+                                </div>
+                              }
+                            </div>
+                          </td>
+                        </tr>
+                      );
+                    })}
+                  </tbody>
+                </table>
+
+              </div>
             </>
           ) : (
             <div className="empty-task">
@@ -455,7 +653,7 @@ export const Task = () => {
                 </div>
                 <div ref={task_name__field_tmp_ref} className="fields-tmp"></div>
               </div>
-              
+
               <div className="fields">
                 <label htmlFor="priority" ref={task_priority_label_ref} className="label-animated" id="taskPriority-label">Priority</label>
                 <div className="input">
@@ -471,7 +669,7 @@ export const Task = () => {
                 </div>
                 <div ref={task_priority_field_tmp_ref} className="fields-tmp"></div>
               </div>
-              
+
               <div className="fields">
                 <label htmlFor="status" ref={task_status_label_ref} className="label-animated" id="taskStatus-label">Status</label>
                 <div className="input">
@@ -481,13 +679,13 @@ export const Task = () => {
                   </div>
                   <ul className={"status-list " + ((showStatusList) ? "active" : "")}>
                     <li><p onClick={(e) => assignValue(e)} className="status-item in-progress">In progress</p></li>
-                    <li className={(!isEditTask) ? "hide-status": ""}><p onClick={(e) => assignValue(e)} className="status-item pending_validation">Pending validation</p></li>
-                    <li className={(!isEditTask) ? "hide-status": ""}><p onClick={(e) => assignValue(e)} className="status-item complete">Complete</p></li>
+                    <li className={(!isEditTask) ? "hide-status" : ""}><p onClick={(e) => assignValue(e)} className="status-item pending_validation">Pending validation</p></li>
+                    <li className={(!isEditTask) ? "hide-status" : ""}><p onClick={(e) => assignValue(e)} className="status-item complete">Complete</p></li>
                   </ul>
                 </div>
                 <div ref={task_status_field_tmp_ref} className="fields-tmp"></div>
               </div>
-             
+
               <div className="fields">
                 <label htmlFor="member" ref={task_member_label_ref} className="label-animated" id="taskMember-label">Team member</label>
                 <div className="input">

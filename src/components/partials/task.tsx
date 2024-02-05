@@ -467,14 +467,22 @@ export const Task = () => {
       .then((result) => {
         if (result.data.valid) {
           setTimeout(() => {
+
             if (save_close) {
               setShow(false);
             }
 
-            handleModalClose();
+
             initializedData.priority = "Low";
             initializedData.status = " In progress";
             setData(initializedData);
+            setMemberValue("");
+            setBtnSaveDisable(false);
+            setBtnSaveLoading("");
+            setIsError(false);
+            setIsSomethingAdded(!isSomethingAdded);
+            setIsEditTask(false);
+
           }, 2000);
         }
       }).catch(error => console.log("Insert Task error: " + error));

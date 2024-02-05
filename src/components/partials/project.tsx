@@ -141,6 +141,7 @@ export default function Project() {
                             }
 
                             setIsDeleteConfirmationShow(project_number_for_delete_confirmation);
+
                         }
                     }).catch(error => console.log(error));
             }).catch(error => alert("Project participant creation error" + error));
@@ -164,6 +165,17 @@ export default function Project() {
         setBtnSaveDisable(false);
         setBtnSaveLoading("");
         setImageUrl(userValues.photo);
+        hideListParticipantMouseDown();
+        
+    }
+
+    const hideListParticipantMouseDown = () => {
+        document.addEventListener('mousedown', (e) => {
+            const list_participant_container = document.getElementById("list_participant_container");
+            if (!list_participant_container?.contains(e.target as HTMLDivElement) ) {
+                setShowListUserSearch("");
+            }
+        });
     }
 
     const editProject = (project_id: string, project_name: string) => {
@@ -199,6 +211,9 @@ export default function Project() {
         } else if (input_focused_class.includes("participant")) {
             project_participant_label_ref.current?.classList.add('active');
             poject_participant_field_tmp_ref.current?.classList.add('active');
+
+            const username = e.target.value;
+            searchUserParticipantFromDatabase(username);
         }
     }
 
@@ -226,16 +241,16 @@ export default function Project() {
     const searchParticipant = (e: FocusEvent<HTMLInputElement>) => {
         e.preventDefault();
         const username = e.currentTarget.value;
+
+        searchUserParticipantFromDatabase(username);
+    }
+
+    const searchUserParticipantFromDatabase = (username: string) => {
         let addedParticipant: Array<Record<string, boolean>> = [];
 
-
-        if (username == "") {
-            setShowListUserSearch("");
-            return;
-        }
-
         setShowListUserSearch("active");
-        setHideLoading('');
+        setHideLoading("");
+
 
         setTimeout(() => {
             axios.post(server_domain + "/seachUser", { username: username })
@@ -500,13 +515,13 @@ export default function Project() {
                                 </div>
                                 <div ref={project_name__field_tmp_ref} className="fields-tmp"></div>
                             </div>
-                            <div className="fields">
+                            <div className="fields" id="list_participant_container">
                                 <label ref={project_participant_label_ref} htmlFor="participant" className="label-animated">Other participant to the project</label>
                                 <div className="input">
                                     <input type="text" name="participant" id="participant" className="participant" onFocus={(e) => increaseTopOfLabel(e)} onBlur={(e) => decreaseTopOfLabel(e)} onChange={searchParticipant} />
                                 </div>
                                 <div ref={poject_participant_field_tmp_ref} className="fields-tmp"></div>
-                                <div className={"list-all-participant " + showListUserSearch}>
+                                <div  className={"list-all-participant " + showListUserSearch}>
                                     <div className={"loading " + hideLoading} >
                                         <img src="./src/assets/images/Walk.gif" alt="" />
                                     </div>

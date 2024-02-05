@@ -1022,13 +1022,15 @@ th {
     position: absolute;
     width: 100%;
     z-index: 3;
+    max-height: 108px;
+    overflow-x: hidden;
     display: none;
 }
 
 .modal-dialog .project-form .fields .list-all-participant.active {
     display: block;
     position: relative;
-    overflow: hidden;
+
 }
 
 .modal-dialog .project-form .fields .list-all-participant.active .loading {

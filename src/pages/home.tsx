@@ -267,7 +267,7 @@ function Home(porps: Content) {
                             </div>
                         </form>
                         <div className={"loading " + hideLoading} >
-                            <img src="./src/assets/images/Walk.gif" alt="" />
+                            <img src="../src/assets/images/Walk.gif" alt="" />
                         </div>
                     </div>
                 </Modal.Body>

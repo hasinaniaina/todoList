@@ -74,32 +74,20 @@ function Signin() {
 
     }
 
-    async function postUserData(datas: Object,) {
-        try {
-            const res = await axios.post(server_domain + "/signin", { user: datas });
-
-            if (res.data == "Success") {
-                setBtnSaveLoading("active");
+    function postUserData(datas: Object) {
+        const res = axios.post(server_domain + "/signin", { user: datas });
+        setBtnSaveLoading("active");
+        res.then(result => {
+            if (result.data.valid) {
                 setTimeout(() => {
-                    const userDatas = axios.post(server_domain + "/login", { user: userValues, remember: false });
-                    userDatas.then((result) => {
-                        const userId = result.data.user._id;
-                        if (userId) {
-                            navigate('/project');
-                            setBtnSaveLoading("");
-                        } 
-                    });
+                    navigate('/project');
+                    setBtnSaveLoading("");
                 }, 2000);
-            } else if (res.data == "Email registered") {
+            } else if (result.data == "Email registered") {
                 setIsError(true);
                 setErrorMessage("Email already saved...");
-            } else {
-                console.log('There is an error in register');
-            }
-
-        } catch (error) {
-            console.log("Post data error")
-        }
+            } 
+        }).catch(error => console.log("Sign in error: " + error));
     }
 
     function isValidEmail(email: string) {

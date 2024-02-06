@@ -76,6 +76,7 @@ export default function Project() {
         axios.post(server_domain + '/getCurrentUser', { rememberedUserId: rememberedUserId })
             .then((user) => {
                 const current_user = user.data.user;
+                console.log(current_user)
                 setUserValues(current_user);
 
                 axios.get(server_domain + '/getProject')

@@ -58,6 +58,7 @@ export const Task = () => {
   const [loadingDeleteSelected, setLoadingDeleteSelected] = useState<Array<boolean>>([]);
   const [isOwnerProject, setIsOwnerProject] = useState<boolean>(false);
   const [isCurrentTaskUserConnected, setIsCurrentTaskUserConnected] = useState<Array<boolean>>([]);
+  const [hideLoading, setHideLoading] = useState<string>("");
 
 
 
@@ -78,7 +79,7 @@ export const Task = () => {
 
   useEffect(() => {
     const rememberedUserId = sessionStorage.getItem('userId');
-
+    setHideLoading('');
     axios.post(server_domain + '/getCurrentUser', { rememberedUserId: rememberedUserId })
       .then((current_user) => {
         const user_current_id = current_user.data.user._id;
@@ -122,6 +123,10 @@ export const Task = () => {
 
                 }).catch(error => console.log("Get user and project task error: " + error));
             }
+            
+            setTimeout(()=> {
+              setHideLoading('hide');
+            }, 1000)
           }).catch(error => console.log("Get task error: " + error));
       }).catch(error => alert("Project participant creation error" + error));
   }, [isSomethingAdded]);
@@ -509,6 +514,9 @@ export const Task = () => {
     <Home>
       <>
         <div className="task">
+          <div className={"loading " + hideLoading}>
+            <img src="../src/assets/images/Walk.gif" alt="" />
+          </div>
           {(task.length > 0 || isTaskFilter) ? (
             <>
               <div className="filter-by">

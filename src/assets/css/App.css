@@ -123,6 +123,28 @@
     }
 }
 
+.content .right .fields-container .fields .input {
+    position: relative;
+}
+
+.content .right .fields-container .fields .input .show-password-icon {
+    position: absolute;
+    top: 40px;
+    right: 7px;
+    z-index: 5;
+    transform: translate(0, -50%);
+    color: #8d8d8d;
+}
+
+.content .right .fields-container .fields .input .show-password-icon svg {
+    display: none;
+}
+
+.content .right .fields-container .fields .input .show-password-icon svg.active {
+    display: block;
+    cursor: pointer;
+}
+
 .content .right .fields-container .fields label,
 .profil-form .fields label,
 .project-form .fields label,
@@ -428,7 +450,9 @@ input:-webkit-autofill:active {
 .dashboard .body .dashboard-content .project,
 .task {
     width: 100%;
+    height: 100%;
     display: flex;
+    position: relative;
     flex-wrap: wrap;
     padding: 10px;
 }
@@ -872,16 +896,16 @@ th {
 }
 
 .profil-form .loading.hide {
-    animation: hideLoadingBackground 6s ease forwards;
+    animation: hideLoadingBackground 1s ease forwards;
 }
 
 @keyframes hideLoadingBackground {
     from {
-        margin-left: 0;
+        height: 100;
     }
 
     to {
-        margin-left: 100%;
+        transform: scale(0);
         opacity: 0;
     }
 }
@@ -973,6 +997,27 @@ th {
     color: #fff;
 }
 
+.signin-container .button-signin, .login-container .button-login{
+    position: relative;
+    overflow: hidden;
+}
+
+
+.signin-container .button-signin .save-loading , .login-container .button-login .save-loading {
+    background-color: rgba(248, 248, 248, 0.5);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    border-radius: 50%;
+    z-index: 4;
+}
+
+.signin-container .button-signin .save-loading.active, .login-container .button-login .save-loading.active{
+    animation: showSaveLoading .8s ease infinite;
+
+}
+
 .modal-dialog .modal-footer .save-loading {
     background-color: #0d6efd;
 }
@@ -1003,7 +1048,7 @@ th {
     }
 
     to {
-        width: 200px;
+        width: 150%;
         height: 200px;
         opacity: 0.8;
     }
@@ -1033,7 +1078,7 @@ th {
 
 }
 
-.modal-dialog .project-form .fields .list-all-participant.active .loading {
+.modal-dialog .project-form .fields .list-all-participant.active .loading, .project .loading, .task .loading  {
     position: absolute;
     width: 100%;
     height: 100%;
@@ -1042,20 +1087,21 @@ th {
     left: 0;
     display: flex;
     align-items: center;
+    z-index: 4;
     justify-content: center;
 }
 
-.modal-dialog .project-form .fields .list-all-participant.active .loading.hide {
-    animation: hideLoadingBackground 6s ease forwards;
+.modal-dialog .project-form .fields .list-all-participant.active .loading.hide, .project .loading.hide, .task .loading.hide {
+    animation: hideLoadingBackground 1s ease forwards;
 }
 
 .modal-dialog .project-form .fields .list-all-participant.active .loading img {
     width: 40px;
 }
 
-.modal-dialog .project-form .fields .list-all-participant.active .loading.hide img {
+/* .modal-dialog .project-form .fields .list-all-participant.active .loading.hide img , .project .loading {
     animation: hideLoading 10s ease forwards;
-}
+} */
 
 .modal-dialog .project-form .fields .list-all-participant ul li {
     display: flex;

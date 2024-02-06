@@ -63,6 +63,8 @@ export default function Project() {
     const [projectHasTask, setProjectHasTask] = useState<Array<boolean>>([]);
     const [isProjectOwner, setisProjectOwner] = useState<Array<boolean>>([]);
     const [numberOfCurrentUserTaskInProject, setNumberOfCurrentUserTaskInProject] = useState<Record<string, number>>({});
+   
+
 
 
 
@@ -70,6 +72,7 @@ export default function Project() {
     useEffect(() => {
         const rememberedUserId = sessionStorage.getItem('userId');
 
+        setHideLoading("");
         axios.post(server_domain + '/getCurrentUser', { rememberedUserId: rememberedUserId })
             .then((user) => {
                 const current_user = user.data.user;
@@ -126,13 +129,13 @@ export default function Project() {
                                                     count_task_according_to_projet ++;
                                                 }
                                             }
-                                        }
-                                        
+                                        }                                        
                                         setProjectList(current_user_project);
                                         setIsEditProject(false);
                                         setProjectHasTask(hasTask);
                                         setisProjectOwner(is_project_owner);
                                         setNumberOfCurrentUserTaskInProject(task_number_of_current_user_for_project);
+                                        
                                     }
                                 }).catch(error => console.log("Get all Tasks error: " + error));
 
@@ -141,8 +144,13 @@ export default function Project() {
                             }
 
                             setIsDeleteConfirmationShow(project_number_for_delete_confirmation);
-
+                        } else {
+                            setProjectList([]);
                         }
+
+                        setTimeout(() => {
+                            setHideLoading("hide");
+                        }, 2000)
                     }).catch(error => console.log(error));
             }).catch(error => alert("Project participant creation error" + error));
     }, [isSomethingAdded]);
@@ -439,6 +447,9 @@ export default function Project() {
     return (
         <Home>
             <div className="project">
+                <div className={"loading " + hideLoading}>
+                    <img src="../src/assets/images/Walk.gif" alt="" />
+                </div>
                 {projectList.length == 0 ? (
                     <div className="empty-project">
                         <div className="folder-img">

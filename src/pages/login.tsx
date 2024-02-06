@@ -3,9 +3,15 @@ import { FocusEvent, FormEvent, createRef, useEffect, useState } from "react";
 import { useNavigate } from 'react-router-dom';
 import { Link } from "react-router-dom";
 import ErrorMessage from "../components/errorMessage";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faEye } from '@fortawesome/free-solid-svg-icons';
+import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
 
 function Login() {
-  const server_domain   = import.meta.env.VITE_REACT_SERVER_DOMAIN;
+  const server_domain = import.meta.env.VITE_REACT_SERVER_DOMAIN;
+
+  const initializeIsEyeShow =  [false, true]
+
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
 
@@ -24,6 +30,8 @@ function Login() {
   const [errorMessage, setErrorMessage] = useState<string>("");
   const [isError, setIsError] = useState<boolean>(false);
   const [rememberMe, setRememberMe] = useState<boolean>(false);
+  const [isEyeIconShow, setIsEyeIconShow] = useState<Array<boolean>>(initializeIsEyeShow);
+  const [btnSaveLoading, setBtnSaveLoading] = useState<string>("");
 
 
 
@@ -40,7 +48,7 @@ function Login() {
       })
       .catch((error => alert(error)))
   }, []);
-  
+
   const catchUserInfo = (e: FormEvent<HTMLInputElement>) => {
     const index = e.currentTarget.name;
     const value = e.currentTarget.value;
@@ -53,21 +61,27 @@ function Login() {
 
   const login = (e: FormEvent<HTMLButtonElement>) => {
     e.preventDefault();
-    const userDatas = axios.post(server_domain + "/login", {user:userValues, remember: rememberMe});
-
+    const userDatas = axios.post(server_domain + "/login", { user: userValues, remember: rememberMe });
+    setBtnSaveLoading("active");
     userDatas.then((result) => {
       const userId = result.data.user._id;
       const rememberMe = result.data.rememberMe;
-      if (userId) {
-        if (rememberMe) {
-          sessionStorage.setItem('userId', userId);
-        }
 
-        navigate('/project');
-      } else {
-        setIsError(true);
-        setErrorMessage("Credential not valid...");
-      }
+      setTimeout(() => {
+        if (userId) {
+          if (rememberMe) {
+            sessionStorage.setItem('userId', userId);
+          }
+  
+          navigate('/project');
+        } else {
+          setIsError(true);
+          setErrorMessage("Credential not valid...");
+        }
+  
+        setBtnSaveLoading("");
+
+      },1000);
     });
   }
 
@@ -86,7 +100,7 @@ function Login() {
       password_label_ref.current?.classList.add('active');
       password_field_tmp_ref.current?.classList.add('active');
     }
-    
+
     setIsError(false);
 
   }
@@ -113,6 +127,23 @@ function Login() {
   }
 
 
+  const changeEyeShowing = (index: number) => {
+    let tmp = [];
+
+    const passowrd_field = document.getElementById('password');
+    if (index == 0) {
+        tmp[0] = false;
+        tmp[1] = true;
+        passowrd_field?.setAttribute('type', 'password');
+    } else {
+        tmp[0] = true;
+        tmp[1] = false;
+        passowrd_field?.setAttribute('type', '');
+    }
+
+    setIsEyeIconShow(tmp);
+
+}
 
 
   return (
@@ -128,7 +159,7 @@ function Login() {
             <h2 className="Login-title">Login</h2>
           </div>
           <div className="fields-container mt-5">
-            <ErrorMessage message={errorMessage} isError={isError}/>
+            <ErrorMessage message={errorMessage} isError={isError} />
             <form action="">
               <div className="fields">
                 <label ref={email_label_ref} htmlFor="email" className="label-animated">Email</label>
@@ -141,16 +172,23 @@ function Login() {
                 <label ref={password_label_ref} htmlFor="password" className="label-animated">Password</label>
                 <div className="input">
                   <input type="password" name="password" id="password" onChange={catchUserInfo} className="password" onFocus={(e) => increaseTopOfLabel(e)} onBlur={(e) => decreaseTopOfLabel(e)} />
+                  <div className="show-password-icon">
+                    <FontAwesomeIcon icon={faEye} className={(isEyeIconShow[0]) ? "active" : ""} onClick={() => changeEyeShowing(0)} />
+                    <FontAwesomeIcon icon={faEyeSlash} className={(isEyeIconShow[1]) ? "active" : ""} onClick={() => changeEyeShowing(1)} />
+                  </div>
                 </div>
 
                 <div ref={password_field_tmp_ref} className="fields-tmp"></div>
               </div>
               <div className="remember-me">
-                <input type="checkbox" name="remember" id="remember-me" onClick={checkRememberMe}/>
+                <input type="checkbox" name="remember" id="remember-me" onClick={checkRememberMe} />
                 <span>Remember me</span>
               </div>
               <div className="button-login">
-                <button onClick={login}>Login</button>
+                <button onClick={login}>
+                  Login
+                  <div className={"save-loading " + btnSaveLoading}></div>
+                </button>
               </div>
               <div className="dont-have-account mt-5">
                 <Link to="/Signin" className="text-slate-400	">Don't have an account? Sign In.</Link>

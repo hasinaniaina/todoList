@@ -63,7 +63,7 @@ export default function Project() {
     const [projectHasTask, setProjectHasTask] = useState<Array<boolean>>([]);
     const [isProjectOwner, setisProjectOwner] = useState<Array<boolean>>([]);
     const [numberOfCurrentUserTaskInProject, setNumberOfCurrentUserTaskInProject] = useState<Record<string, number>>({});
-   
+
 
 
 
@@ -81,19 +81,19 @@ export default function Project() {
                 axios.get(server_domain + '/getProject')
                     .then((project) => {
                         const projects = project.data.result;
-                        const project_number_for_delete_confirmation = [];
-                        const current_user_project: Array<any> = [];
-                        const current_user_id = current_user._id;
-                        let is_project_owner: Array<boolean> = [];
-
-                        for (let i = 0; i < projects.length; i++) {
-                            if (projects[i].owner['_id'] == current_user_id) {
-                                current_user_project.push(projects[i]);
-                                is_project_owner[i] = true;
-                            }                        
-                        }
                         
                         if (projects.length > 0) {
+                            const project_number_for_delete_confirmation = [];
+                            const current_user_project: Array<any> = [];
+                            const current_user_id = current_user._id;
+                            let is_project_owner: Array<boolean> = [];
+
+                            for (let i = 0; i < projects.length; i++) {
+                                if (projects[i].owner['_id'] == current_user_id) {
+                                    current_user_project.push(projects[i]);
+                                    is_project_owner[i] = true;
+                                }
+                            }
                             axios.get(server_domain + "/getTasks")
                                 .then(result => {
                                     if (result.data.valid) {
@@ -117,7 +117,7 @@ export default function Project() {
                                                 if (
                                                     tasks[j].member.includes(current_user_id) &&
                                                     tasks[j].project.includes(projects[i]._id) &&
-                                                    !task_member.includes(tasks[j].member) 
+                                                    !task_member.includes(tasks[j].member)
                                                 ) {
                                                     if (!current_user_project.includes(projects[i])) {
                                                         current_user_project.push(projects[i]);
@@ -128,15 +128,15 @@ export default function Project() {
                                                 // Get number of current_user task on a project
                                                 if (tasks[j].member.includes(current_user_id) && tasks[j].project == projects[i]._id) {
                                                     task_number_of_current_user_for_project[tasks[j].project] = count_task_according_to_projet;
-                                                    count_task_according_to_projet ++;
+                                                    count_task_according_to_projet++;
                                                 }
                                             }
-                                        }                              
-                                        
+                                        }
+
                                         setProjectHasTask(hasTask);
                                         setNumberOfCurrentUserTaskInProject(task_number_of_current_user_for_project);
-                                        
-                                    } 
+
+                                    }
 
                                     setProjectList(current_user_project);
                                     setisProjectOwner(is_project_owner);
@@ -178,13 +178,13 @@ export default function Project() {
         setBtnSaveLoading("");
         setImageUrl(userValues.photo);
         hideListParticipantMouseDown();
-        
+
     }
 
     const hideListParticipantMouseDown = () => {
         document.addEventListener('mousedown', (e) => {
             const list_participant_container = document.getElementById("list_participant_container");
-            if (!list_participant_container?.contains(e.target as HTMLDivElement) ) {
+            if (!list_participant_container?.contains(e.target as HTMLDivElement)) {
                 setShowListUserSearch("");
             }
         });
@@ -464,7 +464,7 @@ export default function Project() {
                 ) :
                     <>
                         <div className="add-project" onClick={handleModalShow}>
-                            <FontAwesomeIcon  icon={faFolderBlank} />
+                            <FontAwesomeIcon icon={faFolderBlank} />
                         </div>
                         <div className="project-list">
                             {projectList.map((project, index) => {
@@ -473,7 +473,7 @@ export default function Project() {
                                         <div className="top-container">
                                             <div className="left">
                                                 <img src={"./src/assets/images/folder_" + ((projectHasTask[index]) ? "withTask" : "noTask") + ".png"} alt="folder" onClick={() => navigateToTask(project._id)} />
-                                                {(numberOfCurrentUserTaskInProject[project._id]) && 
+                                                {(numberOfCurrentUserTaskInProject[project._id]) &&
                                                     <div className="notification-of-project">
                                                         <p>{numberOfCurrentUserTaskInProject[project._id]}</p>
                                                     </div>
@@ -536,7 +536,7 @@ export default function Project() {
                                     <input type="text" name="participant" id="participant" className="participant" onFocus={(e) => increaseTopOfLabel(e)} onBlur={(e) => decreaseTopOfLabel(e)} onChange={searchParticipant} />
                                 </div>
                                 <div ref={poject_participant_field_tmp_ref} className="fields-tmp"></div>
-                                <div  className={"list-all-participant " + showListUserSearch}>
+                                <div className={"list-all-participant " + showListUserSearch}>
                                     <div className={"loading " + hideLoading} >
                                         <img src="./src/assets/images/Walk.gif" alt="" />
                                     </div>

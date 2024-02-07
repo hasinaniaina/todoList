@@ -492,6 +492,9 @@ video {
   --tw-backdrop-saturate:  ;
   --tw-backdrop-sepia:  ;
 }
+.z-10 {
+  z-index: 10;
+}
 .mb-4 {
   margin-bottom: 1rem;
 }

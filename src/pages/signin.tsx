@@ -75,6 +75,8 @@ function Signin() {
     }
 
     function postUserData(datas: Object) {
+        axios.defaults.withCredentials = true;
+
         const res = axios.post(server_domain + "/signin", { user: datas });
         setBtnSaveLoading("active");
         res.then(result => {
@@ -202,7 +204,7 @@ function Signin() {
                                         <FontAwesomeIcon icon={faEyeSlash} className={(isEyeIconShow.password[1]) ? "active" : ""} onClick={() => changeEyeShowing(1, 'password')} />
                                     </div>
 
-                                    <div className="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert" style={passwordInfo ? { display: 'block' } : { display: 'none' }}>
+                                    <div className="password-info" role="alert" style={passwordInfo ? { display: 'block' } : { display: 'none' }}>
                                         <span className="font-medium">Info:</span> Password should equal or higher than 8 letters
                                     </div>
                                 </div>
@@ -217,10 +219,6 @@ function Signin() {
                                         <FontAwesomeIcon icon={faEye} className={(isEyeIconShow.passwordConfirmation[0]) ? "active" : ""} onClick={() => changeEyeShowing(0, 'passwordConfirmation')} />
                                         <FontAwesomeIcon icon={faEyeSlash} className={(isEyeIconShow.passwordConfirmation[1]) ? "active" : ""} onClick={() => changeEyeShowing(1, 'passwordConfirmation')} />
                                     </div>
-
-                                    {/* <div className="p-4 mb-4 text-sm text-yellow-800 rounded-lg bg-yellow-50 dark:bg-gray-800 dark:text-yellow-300" role="alert" style={passwordInfo ? { display: 'block' } : { display: 'none' }}>
-                                        <span className="font-medium">Info:</span> Password should equal or higher than 8 letters
-                                    </div> */}
                                 </div>
                                 <div ref={password_confirmation_field_tmp_ref} className="fields-tmp"></div>
                             </div>

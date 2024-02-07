@@ -82,17 +82,24 @@ export default function Project() {
                     .then((project) => {
                         const projects = project.data.result;
                         const project_number_for_delete_confirmation = [];
-                         
+                        const current_user_project: Array<any> = [];
+                        const current_user_id = current_user._id;
+                        let is_project_owner: Array<boolean> = [];
+
+                        for (let i = 0; i < projects.length; i++) {
+                            if (projects[i].owner['_id'] == current_user_id) {
+                                current_user_project.push(projects[i]);
+                                is_project_owner[i] = true;
+                            }                        
+                        }
+                        
                         if (projects.length > 0) {
                             axios.get(server_domain + "/getTasks")
                                 .then(result => {
                                     if (result.data.valid) {
                                         const tasks = result.data.result;
                                         const hasTask = [];
-                                        const current_user_project = [];
-                                        const current_user_id = current_user._id;
                                         const task_member: Array<string> = [];
-                                        let is_project_owner = [];
                                         let task_number_of_current_user_for_project: Record<string, number> = {};
 
                                         for (let i = 0; i < projects.length; i++) {
@@ -100,11 +107,6 @@ export default function Project() {
 
                                             hasTask.push(false);
                                             is_project_owner.push(false);
-                                            
-                                            if (projects[i].owner['_id'] == current_user_id) {
-                                                current_user_project.push(projects[i]);
-                                                is_project_owner[i] = true;
-                                            }
 
                                             for (let j = 0; j < tasks.length; j++) {
                                                 if (projects[i]["_id"] == tasks[j]['project']) {
@@ -129,14 +131,16 @@ export default function Project() {
                                                     count_task_according_to_projet ++;
                                                 }
                                             }
-                                        }                                        
-                                        setProjectList(current_user_project);
-                                        setIsEditProject(false);
+                                        }                              
+                                        
                                         setProjectHasTask(hasTask);
-                                        setisProjectOwner(is_project_owner);
                                         setNumberOfCurrentUserTaskInProject(task_number_of_current_user_for_project);
                                         
-                                    }
+                                    } 
+
+                                    setProjectList(current_user_project);
+                                    setisProjectOwner(is_project_owner);
+                                    setIsEditProject(false);
                                 }).catch(error => console.log("Get all Tasks error: " + error));
 
                             for (let i = 0; i < projects.length; i++) {

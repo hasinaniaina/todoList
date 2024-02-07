@@ -48,7 +48,7 @@ export const Task = () => {
   const [showMemberList, setShowMemberList] = useState<boolean>(false);
   const [showFilterMemberList, setShowFilterMemberList] = useState<boolean>(false);
   const [memberValue, setMemberValue] = useState<string>("");
-  // const [filterMemberValue, setFiterMemberValue] = useState<string>("");
+  const [filterLoading, setFilterLoading] = useState<boolean>(false);
   const [data, setData] = useState<Record<string, string>>(initializedData);
   const [filterData, setFilterData] = useState<Record<string, string>>(initializedData);
   const [errorMessage, setErrorMessage] = useState<string>("");
@@ -79,7 +79,6 @@ export const Task = () => {
 
   useEffect(() => {
     const rememberedUserId = sessionStorage.getItem('userId');
-    setHideLoading('');
     axios.post(server_domain + '/getCurrentUser', { rememberedUserId: rememberedUserId })
       .then((current_user) => {
         const user_current_id = current_user.data.user._id;
@@ -126,6 +125,7 @@ export const Task = () => {
             
             setTimeout(()=> {
               setHideLoading('hide');
+              setFilterLoading(false);
             }, 1000)
           }).catch(error => console.log("Get task error: " + error));
       }).catch(error => alert("Project participant creation error" + error));
@@ -391,6 +391,7 @@ export const Task = () => {
 
     setIsTaskFilter(true);
     setIsSomethingAdded(!isSomethingAdded);
+    setFilterLoading(true);
   }
 
 
@@ -445,6 +446,7 @@ export const Task = () => {
         if (updated) {
           setTimeout(() => {
             handleModalClose();
+            setHideLoading('');
           }, 2000);
         }
       }).catch(error => console.log("Update task error: " + error));
@@ -484,6 +486,7 @@ export const Task = () => {
             setMemberValue("");
             setBtnSaveDisable(false);
             setBtnSaveLoading("");
+            setHideLoading('');
             setIsError(false);
             setIsSomethingAdded(!isSomethingAdded);
             setIsEditTask(false);
@@ -595,6 +598,13 @@ export const Task = () => {
                     </tr>
                   </thead>
                   <tbody>
+                    {(filterLoading) && 
+                    <tr>
+                      <td colSpan={6} className="loading-table">
+                        <img src="../src/assets/images/Walk.gif" alt="loading" />
+                      </td>
+                    </tr>
+                    }
                     {task.map((value, index) => {
                       return (
                         <tr key={index}>

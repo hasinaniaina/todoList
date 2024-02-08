@@ -3,7 +3,6 @@ import { FocusEvent, FormEvent, ReactNode, createRef, useEffect, useState, useRe
 import { useNavigate } from 'react-router-dom';
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import { ref, uploadBytes } from 'firebase/storage';
 import { storage, getImage } from '../../firebase';
 import Breadcrumbs from '../components/breadcrumbs';

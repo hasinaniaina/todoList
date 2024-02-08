@@ -21,7 +21,7 @@ interface TaskInterface {
   project: string
 }
 
-export const Task = () => {
+const Task = () => {
   const server_domain = import.meta.env.VITE_REACT_SERVER_DOMAIN;
 
   const location = useLocation();
@@ -770,3 +770,5 @@ export const Task = () => {
     </Home>
   )
 }
+
+export default Task;

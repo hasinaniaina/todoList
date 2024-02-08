@@ -127,7 +127,7 @@
     position: relative;
 }
 
-.content .right .fields-container .fields .input .show-password-icon {
+.content .right .fields-container .fields .input .show-password-icon, .profil-form .show-password-icon {
     position: absolute;
     top: 40px;
     right: 7px;
@@ -136,11 +136,11 @@
     color: #8d8d8d;
 }
 
-.content .right .fields-container .fields .input .show-password-icon svg {
+.content .right .fields-container .fields .input .show-password-icon svg, .profil-form .show-password-icon svg{
     display: none;
 }
 
-.content .right .fields-container .fields .input .show-password-icon svg.active {
+.content .right .fields-container .fields .input .show-password-icon svg.active, .profil-form .show-password-icon svg.active {
     display: block;
     cursor: pointer;
 }

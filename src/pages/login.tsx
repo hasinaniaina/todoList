@@ -6,11 +6,12 @@ import ErrorMessage from "../components/errorMessage";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faEye } from '@fortawesome/free-solid-svg-icons';
 import { faEyeSlash } from '@fortawesome/free-solid-svg-icons';
+import { changeEyeShowing } from "../utils/utils";
 
 function Login() {
   const server_domain = import.meta.env.VITE_REACT_SERVER_DOMAIN;
 
-  const initializeIsEyeShow =  [false, true]
+  const initializeIsEyeShow = [false, true]
 
   const navigate = useNavigate();
   axios.defaults.withCredentials = true;
@@ -57,6 +58,7 @@ function Login() {
       ...prev,
       [index]: value
     }));
+
   }
 
   const login = (e: FormEvent<HTMLButtonElement>) => {
@@ -72,16 +74,16 @@ function Login() {
           if (rememberMe) {
             sessionStorage.setItem('userId', userId);
           }
-  
+
           navigate('/project');
         } else {
           setIsError(true);
           setErrorMessage("Credential not valid...");
         }
-  
+
         setBtnSaveLoading("");
 
-      },1000);
+      }, 1000);
     });
   }
 
@@ -100,7 +102,6 @@ function Login() {
       password_label_ref.current?.classList.add('active');
       password_field_tmp_ref.current?.classList.add('active');
     }
-
     setIsError(false);
 
   }
@@ -127,23 +128,9 @@ function Login() {
   }
 
 
-  const changeEyeShowing = (index: number) => {
-    let tmp = [];
-
-    const passowrd_field = document.getElementById('password');
-    if (index == 0) {
-        tmp[0] = false;
-        tmp[1] = true;
-        passowrd_field?.setAttribute('type', 'password');
-    } else {
-        tmp[0] = true;
-        tmp[1] = false;
-        passowrd_field?.setAttribute('type', '');
-    }
-
-    setIsEyeIconShow(tmp);
-
-}
+  const showPassword = (index: number) => {
+    setIsEyeIconShow(changeEyeShowing(index));
+  }
 
 
   return (
@@ -173,8 +160,8 @@ function Login() {
                 <div className="input">
                   <input type="password" name="password" id="password" onChange={catchUserInfo} className="password" onFocus={(e) => increaseTopOfLabel(e)} onBlur={(e) => decreaseTopOfLabel(e)} />
                   <div className="show-password-icon">
-                    <FontAwesomeIcon icon={faEye} className={(isEyeIconShow[0]) ? "active" : ""} onClick={() => changeEyeShowing(0)} />
-                    <FontAwesomeIcon icon={faEyeSlash} className={(isEyeIconShow[1]) ? "active" : ""} onClick={() => changeEyeShowing(1)} />
+                    <FontAwesomeIcon icon={faEye} className={(isEyeIconShow[0]) ? "active" : ""} onClick={() => showPassword(0)} />
+                    <FontAwesomeIcon icon={faEyeSlash} className={(isEyeIconShow[1]) ? "active" : ""} onClick={() => showPassword(1)} />
                   </div>
                 </div>
 

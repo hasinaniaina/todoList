@@ -250,7 +250,7 @@ function Home(porps: Content) {
                     </div>
                 </div>
             </div>
-            <Modal show={show} onHide={handleModalClose} animation={false}>
+            <Modal show={show} onHide={handleModalClose} animation={false}  backdrop="static">
                 <Modal.Header closeButton>
                     <Modal.Title>Profile</Modal.Title>
                 </Modal.Header>

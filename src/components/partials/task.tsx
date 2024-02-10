@@ -659,7 +659,7 @@ const Task = () => {
           )}
         </div>
       </>
-      <Modal show={show} onHide={handleModalClose} animation={false}>
+      <Modal show={show} onHide={handleModalClose} animation={false}  backdrop="static">
         <Modal.Header closeButton>
           <Modal.Title>Task</Modal.Title>
         </Modal.Header>

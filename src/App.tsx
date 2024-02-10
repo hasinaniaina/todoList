@@ -15,7 +15,7 @@ function App() {
     <BrowserRouter>
       <Suspense fallback={<h1>Loading...</h1>}>
         <Routes>
-          <Route path="/" element={<Login />}></Route>
+          <Route path="/*" element={<Login />}></Route>
           <Route path="/project" element={<Project />}></Route>
           <Route path="/project/Task" element={<Task />}></Route>
           <Route path="/login" element={<Login />}></Route>

@@ -20,13 +20,18 @@ interface User {
 }
 
 export default function Project() {
+    const initializeListUser = [{
+        _id: "",
+        userImageUrl: "",
+        username: "",
+    }];
+
     const server_domain = import.meta.env.VITE_REACT_SERVER_DOMAIN;
     const navigate = useNavigate();
 
     const [show, setShow] = useState<boolean>(false);
     const project_name_label_ref = createRef<HTMLLabelElement>();
     const project_participant_label_ref = createRef<HTMLLabelElement>();
-
     const project_name__field_tmp_ref = createRef<HTMLDivElement>();
     const poject_participant_field_tmp_ref = createRef<HTMLDivElement>();
 
@@ -38,13 +43,7 @@ export default function Project() {
     });
 
     const [imageUrl, setImageUrl] = useState<string>("");
-    const [listSearch, setListSearch] = useState<Array<object>>([
-        {
-            _id: "",
-            userImageUrl: "",
-            username: "",
-        }
-    ]);
+    const [listSearch, setListSearch] = useState<Array<object>>(initializeListUser);
 
     const [showListUserSearch, setShowListUserSearch] = useState<String>("");
     const [hideLoading, setHideLoading] = useState<string>("");
@@ -73,6 +72,7 @@ export default function Project() {
         const rememberedUserId = sessionStorage.getItem('userId');
 
         setHideLoading("");
+
         axios.post(server_domain + '/getCurrentUser', { rememberedUserId: rememberedUserId })
             .then((user) => {
                 const current_user = user.data.user;
@@ -91,9 +91,10 @@ export default function Project() {
                             for (let i = 0; i < projects.length; i++) {
                                 if (projects[i].owner['_id'] == current_user_id) {
                                     current_user_project.push(projects[i]);
-                                    is_project_owner[i] = true;
-                                }
+                                    is_project_owner.push(true);
+                                } 
                             }
+
                             axios.get(server_domain + "/getTasks")
                                 .then(result => {
                                     if (result.data.valid) {
@@ -137,6 +138,7 @@ export default function Project() {
                                         setNumberOfCurrentUserTaskInProject(task_number_of_current_user_for_project);
 
                                     }
+
 
                                     setProjectList(current_user_project);
                                     setisProjectOwner(is_project_owner);
@@ -262,6 +264,7 @@ export default function Project() {
 
         setShowListUserSearch("active");
         setHideLoading("");
+        setListSearch(initializeListUser);
 
 
         setTimeout(() => {
